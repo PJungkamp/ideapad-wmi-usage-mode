@@ -1,0 +1,3 @@
+[submodule "arch"]
+	path = arch
+	url = ssh://aur@aur.archlinux.org/ideapad-wmi-usage-mode.git
