@@ -1,22 +1,19 @@
+
+KERNELRELEASE ?= $(shell uname -r)
+KERNEL_DIR  ?= /lib/modules/$(KERNELRELEASE)/build
+PWD := $(shell pwd)
+
 TARGET_MODULE:=ideapad-wmi-usage-mode
 obj-m := $(TARGET_MODULE).o
 
-KVER?=$(shell uname -r)
-KDIR=/lib/modules/$(KVER)/build
-MDIR=/lib/modules/$(KVER)/kernel/platform/x86
-
-default:
-	$(MAKE) -C $(KDIR) M=$(PWD) modules
+all:
+	$(MAKE) -C $(KERNEL_DIR) M=$(PWD) modules
 
 install:
-	install -d $(MDIR)
-	install -m 644 -c $(TARGET_MODULE).ko $(MDIR)
-	depmod -a
+	$(MAKE) -C $(KERNEL_DIR) M=$(PWD) modules_install
+
+test:
+	gcc test.c -o test
 
 clean:
-	$(MAKE) -C $(KDIR) M=$(PWD) clean
-
-load:
-	insmod ./$(TARGET_MODULE).ko
-unload:
-	rmmod ./$(TARGET_MODULE).ko
+	$(MAKE) -C $(KERNEL_DIR) M=$(PWD) clean
